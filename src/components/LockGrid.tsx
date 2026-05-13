@@ -296,20 +296,39 @@ export default function LockGrid({ gridSize }: LockGridProps) {
       const hasHighlight = highlightedSlope !== null;
       const stroke = hasHighlight && !isHighlighted ? "#D8D6D0" : segment.color;
 
+      const dx = to.x - from.x;
+      const dy = to.y - from.y;
+      const distance = Math.hypot(dx, dy);
+      const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+      // Slightly closer to the circle edge
+      const arrowOffset = gridSize === 3 ? 24 : 23;
+      const arrowX = to.x - (dx / distance) * arrowOffset;
+      const arrowY = to.y - (dy / distance) * arrowOffset;
+
       return (
-        <motion.line
-          key={`${segment.from}-${segment.to}-${index}`}
-          x1={from.x}
-          y1={from.y}
-          x2={to.x}
-          y2={to.y}
-          stroke={stroke}
-          strokeWidth={isHighlighted ? 8 : gridSize === 3 ? 5 : 4}
-          strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: hasHighlight && !isHighlighted ? 0.25 : 0.92 }}
-          transition={{ duration: 0.22, ease: "easeOut" }}
-        />
+        <g key={`${segment.from}-${segment.to}-${index}`}>
+          <motion.line
+            x1={from.x}
+            y1={from.y}
+            x2={to.x}
+            y2={to.y}
+            stroke={stroke}
+            strokeWidth={isHighlighted ? 8 : gridSize === 3 ? 5 : 4}
+            strokeLinecap="round"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: hasHighlight && !isHighlighted ? 0.25 : 0.92 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          />
+          {isHighlighted && (
+            <motion.path
+              d="M -10 -8 L 10 0 L -10 8 Z"
+              fill={stroke}
+              initial={{ opacity: 0, scale: 0, x: arrowX, y: arrowY, rotate: angle }}
+              animate={{ opacity: 1, scale: 1, x: arrowX, y: arrowY, rotate: angle }}
+              transition={{ duration: 0.22, delay: 0.1, ease: "easeOut" }}
+            />
+          )}
+        </g>
       );
     });
 
@@ -527,7 +546,7 @@ export default function LockGrid({ gridSize }: LockGridProps) {
                   className="mt-2 w-full rounded-md border border-[#EAEAEA] bg-white px-3 py-2 text-sm text-[#2F3437] outline-none transition focus:border-[#787774]"
                 />
                 <span className="mt-2 block text-xs text-[#787774]">
-                  Type numbers separated by spaces or commas, then run the animation.
+                  Type numbers separated by spaces or commas.
                 </span>
               </label>
               <button
