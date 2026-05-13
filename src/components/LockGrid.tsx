@@ -543,19 +543,52 @@ export default function LockGrid({ gridSize }: LockGridProps) {
             <AnimatePresence>
               {(notice || verifyResult) && (
                 <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  className={`mt-4 rounded-md border p-4 text-sm ${
-                    verifyResult?.success
-                      ? "border-[#EDF3EC] bg-[#EDF3EC] text-[#346538]"
-                      : "border-[#EAEAEA] bg-white text-[#787774]"
-                  }`}
+                  className="fixed inset-0 z-50 flex items-center justify-center bg-[#2F3437]/20 px-4 py-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => {
+                    setVerifyResult(null);
+                    setNotice(null);
+                  }}
                 >
-                  <p className="font-medium text-[#2F3437]">
-                    {verifyResult?.success ? "Complete pattern" : notice ? "Notice" : "Pattern report"}
-                  </p>
-                  <p className="mt-1">{notice || verifyResult?.message}</p>
+                  <motion.div
+                    role="dialog"
+                    aria-modal="true"
+                    className="minimal-card w-full max-w-md p-6"
+                    initial={{ opacity: 0, y: 14, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    <div className="flex items-start justify-between gap-4 border-b border-[#EAEAEA] pb-4">
+                      <div>
+                        <h2 className={`text-sm font-semibold uppercase tracking-[0.08em] ${verifyResult?.success ? "text-[#346538]" : "text-[#2F3437]"}`}>
+                          {verifyResult?.success ? "Complete pattern" : notice ? "Notice" : "Pattern report"}
+                        </h2>
+                        <p className="mt-1 text-sm text-[#787774]">
+                          {verifyResult?.success ? "Verification succeeded." : "Verification details."}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setVerifyResult(null);
+                          setNotice(null);
+                        }}
+                        className="rounded-md border border-[#EAEAEA] bg-white px-2 py-1 text-xs font-medium text-[#787774] transition hover:bg-[#F7F6F3] hover:text-[#2F3437]"
+                      >
+                        Close
+                      </button>
+                    </div>
+
+                    <div className="mt-5 space-y-4 text-sm text-[#787774]">
+                      <div className={`rounded-md border p-3 ${verifyResult?.success ? "border-[#EDF3EC] bg-[#EDF3EC] text-[#346538]" : "border-[#EAEAEA] bg-[#FBFBFA] text-[#787774]"}`}>
+                        <p>{notice || verifyResult?.message}</p>
+                      </div>
+                    </div>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
