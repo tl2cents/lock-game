@@ -12,11 +12,16 @@ A standalone frontend puzzle about drawing Android-style lock patterns that cove
 
 ### Easy Demo
 
+<p align="center">
 <img src="./public/3×3.gif" alt="Easy 3x3 demo" width="560" />
+</p>
+
 
 ### Crazy Demo
 
-<img src="./public/7×7.gif" alt="Crazy 7x7 demo" width="560" />
+<p align="center">
+<img src="./public/7×7.gif" alt="Crazy 7x7 demo" width="640" />
+</p>
 
 ## What It Does
 
