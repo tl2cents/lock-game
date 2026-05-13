@@ -2,26 +2,21 @@
 
 A standalone frontend puzzle about drawing Android-style lock patterns that cover every possible line slope in a square grid.
 
-Live site target:
+- Live site target: https://tanglee.top/lock-game/
+- Concept link: https://www.youtube.com/watch?v=PKjbBQ0PBCQ
 
-```text
-https://tl2cents.github.io/lock-game/
-```
-
-Concept link: https://www.youtube.com/watch?v=PKjbBQ0PBCQ. 
-
-> I really enjoyed that video and the math behind the lock patterns. Then, I ask my agent (Codex + GPT-5.5) to implement the game as a static website, and it turned into this project. Hope you enjoy this game and I strongly recommend you to watch the video after playing the game.
+> I really enjoyed that video and the math behind the lock patterns. Then, I asked my agent (Codex + GPT-5.5) to implement the game as a static website, and it turned into this project. Hope you enjoy this game and I strongly recommend you to watch the video after playing the game.
 
 
 ## Demo
 
 ### Easy Demo
 
-![Easy 3x3 demo](./public/3×3.gif)
+<img src="./public/3×3.gif" alt="Easy 3x3 demo" width="560" />
 
 ### Crazy Demo
 
-![Crazy 7x7 demo](./public/7×7.gif)
+<img src="./public/7×7.gif" alt="Crazy 7x7 demo" width="560" />
 
 ## What It Does
 
