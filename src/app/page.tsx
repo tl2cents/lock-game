@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import SelectPage from "./select/page";
 
 export default function Home() {
-  redirect("/select");
+  return <SelectPage />;
 }

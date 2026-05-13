@@ -1,7 +1,8 @@
 {
-  "name": "the-most-complicated-lock-pattern-game",
+  "name": "lock-game",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://tl2cents.github.io/lock-game/",
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",

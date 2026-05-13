@@ -44,6 +44,7 @@ export default function LockGrid({ gridSize }: LockGridProps) {
   const [isPlayingDemo, setIsPlayingDemo] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [highlightedSlope, setHighlightedSlope] = useState<string | null>(null);
+  const [activeDialog, setActiveDialog] = useState<"rules" | "controls" | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   const svgSize = gridSize === 3 ? 420 : gridSize === 5 ? 620 : 840;
@@ -338,8 +339,8 @@ export default function LockGrid({ gridSize }: LockGridProps) {
   const pointFontSize = gridSize === 3 ? 13 : gridSize === 5 ? 12 : 12;
   const pageMaxClass = gridSize === 7 ? "max-w-[96rem]" : "max-w-7xl";
   const sectionGridClass = gridSize === 7
-    ? "xl:grid-cols-[250px_minmax(0,1fr)_280px]"
-    : "lg:grid-cols-[280px_minmax(0,1fr)_300px]";
+    ? "xl:grid-cols-[minmax(0,1fr)_280px]"
+    : "lg:grid-cols-[minmax(0,1fr)_300px]";
   const boardMaxClass = gridSize === 3 ? "max-w-[560px]" : gridSize === 5 ? "max-w-[760px]" : "max-w-[920px]";
 
   return (
@@ -355,40 +356,6 @@ export default function LockGrid({ gridSize }: LockGridProps) {
       </header>
 
       <section className={`mt-10 grid items-start gap-5 ${sectionGridClass}`}>
-        <motion.aside
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="minimal-card p-6"
-        >
-          <div className="flex items-center justify-between border-b border-[#EAEAEA] pb-4">
-            <h2 className="text-sm font-semibold uppercase tracking-[0.08em] text-[#2F3437]">Rules</h2>
-            <span className="tag bg-[#EDF3EC] text-[#346538]">{gridSize}x{gridSize}</span>
-          </div>
-          <ol className="mt-5 space-y-4 text-sm text-[#787774]">
-            {rules.map((rule, index) => (
-              <li key={rule} className="grid grid-cols-[24px_1fr] gap-3">
-                <span className="mono flex h-6 w-6 items-center justify-center rounded-md border border-[#EAEAEA] bg-[#F7F6F3] text-xs text-[#2F3437]">
-                  {index + 1}
-                </span>
-                <span>{rule}</span>
-              </li>
-            ))}
-          </ol>
-
-          <div className="mt-7 border-t border-[#EAEAEA] pt-5">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-[#2F3437]">Controls</h3>
-            <dl className="mt-4 space-y-3 text-sm">
-              {controlNotes.map(([term, description]) => (
-                <div key={term}>
-                  <dt className="font-medium text-[#2F3437]">{term}</dt>
-                  <dd className="mt-0.5 text-[#787774]">{description}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </motion.aside>
-
         <motion.main
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -407,38 +374,55 @@ export default function LockGrid({ gridSize }: LockGridProps) {
           </div>
 
           <div className="p-4 sm:p-6">
-            <div className={`mx-auto mb-3 flex w-full ${boardMaxClass} items-center justify-between gap-3 rounded-lg border border-[#EAEAEA] bg-white px-3 py-2`}>
-              <span className="text-xs font-semibold uppercase tracking-[0.08em] text-[#2F3437]">Mode</span>
-              <div className="grid grid-cols-2 gap-1 rounded-md bg-[#F7F6F3] p-1">
-                {[
-                  ["swipe", "Swipe"],
-                  ["click", "Click"],
-                ].map(([mode, label]) => {
-                  const active = interactionMode === mode;
-                  return (
-                    <button
-                      key={mode}
-                      type="button"
-                      onClick={() => setInteractionMode(mode as "swipe" | "click")}
-                      disabled={isPlayingDemo}
-                      className={`flex min-h-9 items-center justify-center gap-2 rounded-md px-3 text-sm font-medium transition active:scale-[0.98] disabled:opacity-40 ${
-                        active
-                          ? "bg-white text-[#2F3437]"
-                          : "text-[#787774] hover:bg-white/70 hover:text-[#2F3437]"
-                      }`}
-                      aria-pressed={active}
-                      title={`Switch to ${label.toLowerCase()} mode.`}
-                    >
-                      <span
-                        className={`h-4 w-4 rounded-[9999px] border ${
-                          active ? "border-[#5F7F5B] bg-[#5F7F5B]" : "border-[#D8D6D0] bg-white"
+            <div className={`mx-auto mb-3 flex w-full ${boardMaxClass} flex-col gap-3 rounded-lg border border-[#EAEAEA] bg-white px-3 py-2 sm:flex-row sm:items-center sm:justify-between`}>
+              <button
+                type="button"
+                onClick={() => setActiveDialog("rules")}
+                className="flex min-h-9 items-center justify-center gap-2 rounded-md border border-[#EAEAEA] bg-white px-3 text-sm font-medium text-[#2F3437] transition hover:bg-[#F7F6F3] active:scale-[0.98] sm:justify-start"
+              >
+                Show Rules
+                <span className="tag bg-[#EDF3EC] text-[#346538]">{gridSize}x{gridSize}</span>
+              </button>
+
+              <div className="flex items-center justify-between gap-3 sm:justify-end">
+                <button
+                  type="button"
+                  onClick={() => setActiveDialog("controls")}
+                  className="text-xs font-semibold uppercase tracking-[0.08em] text-[#2F3437] underline-offset-4 transition hover:text-[#5F7F5B] hover:underline"
+                >
+                  Mode
+                </button>
+                <div className="grid grid-cols-2 gap-1 rounded-md bg-[#F7F6F3] p-1">
+                  {[
+                    ["swipe", "Swipe"],
+                    ["click", "Click"],
+                  ].map(([mode, label]) => {
+                    const active = interactionMode === mode;
+                    return (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => setInteractionMode(mode as "swipe" | "click")}
+                        disabled={isPlayingDemo}
+                        className={`flex min-h-9 items-center justify-center gap-2 rounded-md px-3 text-sm font-medium transition active:scale-[0.98] disabled:opacity-40 ${
+                          active
+                            ? "bg-white text-[#2F3437]"
+                            : "text-[#787774] hover:bg-white/70 hover:text-[#2F3437]"
                         }`}
-                        aria-hidden="true"
-                      />
-                      {label}
-                    </button>
-                  );
-                })}
+                        aria-pressed={active}
+                        title={`Switch to ${label.toLowerCase()} mode.`}
+                      >
+                        <span
+                          className={`h-4 w-4 rounded-[9999px] border ${
+                            active ? "border-[#5F7F5B] bg-[#5F7F5B]" : "border-[#D8D6D0] bg-white"
+                          }`}
+                          aria-hidden="true"
+                        />
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
@@ -650,6 +634,72 @@ export default function LockGrid({ gridSize }: LockGridProps) {
           </div>
         </motion.aside>
       </section>
+
+      <AnimatePresence>
+        {activeDialog && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#2F3437]/20 px-4 py-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActiveDialog(null)}
+          >
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={`${activeDialog}-dialog-title`}
+              className="minimal-card w-full max-w-md p-6"
+              initial={{ opacity: 0, y: 14, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.98 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-start justify-between gap-4 border-b border-[#EAEAEA] pb-4">
+                <div>
+                  <h2 id={`${activeDialog}-dialog-title`} className="text-sm font-semibold uppercase tracking-[0.08em] text-[#2F3437]">
+                    {activeDialog === "rules" ? "Rules" : "Controls"}
+                  </h2>
+                  <p className="mt-1 text-sm text-[#787774]">
+                    {activeDialog === "rules"
+                      ? `For the ${gridSize}x${gridSize} grid.`
+                      : "Quick reference for the game controls."}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveDialog(null)}
+                  className="rounded-md border border-[#EAEAEA] bg-white px-2 py-1 text-xs font-medium text-[#787774] transition hover:bg-[#F7F6F3] hover:text-[#2F3437]"
+                >
+                  Close
+                </button>
+              </div>
+
+              {activeDialog === "rules" ? (
+                <ol className="mt-5 space-y-4 text-sm text-[#787774]">
+                  {rules.map((rule, index) => (
+                    <li key={rule} className="grid grid-cols-[24px_1fr] gap-3">
+                      <span className="mono flex h-6 w-6 items-center justify-center rounded-md border border-[#EAEAEA] bg-[#F7F6F3] text-xs text-[#2F3437]">
+                        {index + 1}
+                      </span>
+                      <span>{rule}</span>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <dl className="mt-5 space-y-4 text-sm">
+                  {controlNotes.map(([term, description]) => (
+                    <div key={term} className="rounded-md border border-[#EAEAEA] bg-[#FBFBFA] p-3">
+                      <dt className="font-medium text-[#2F3437]">{term}</dt>
+                      <dd className="mt-1 text-[#787774]">{description}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
