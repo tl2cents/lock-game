@@ -23,7 +23,7 @@ const gridOptions: GridOption[] = [
     totalPoints: GRID_CONFIGS[3].totalPoints,
     totalSlopes: 8,
     description: "Learn the rule set on the classic nine-dot grid.",
-    accent: "#2563eb",
+    accent: "#1F6C9F",
   },
   {
     size: 5,
@@ -32,7 +32,7 @@ const gridOptions: GridOption[] = [
     totalPoints: GRID_CONFIGS[5].totalPoints,
     totalSlopes: 24,
     description: "More points, more blocked paths, and a wider slope catalog.",
-    accent: "#7c3aed",
+    accent: "#956400",
   },
   {
     size: 7,
@@ -41,25 +41,35 @@ const gridOptions: GridOption[] = [
     totalPoints: GRID_CONFIGS[7].totalPoints,
     totalSlopes: 48,
     description: "A dense search space for complete slope coverage.",
-    accent: "#dc2626",
+    accent: "#9F2F2D",
   },
 ];
 
 const rules = [
-  "Choose a grid and draw one continuous lock pattern by swiping or clicking numbered points.",
   "Each point may be used at most once.",
   "A long straight jump is legal only after every intermediate point on that line has already been selected.",
-  "Every segment has a slope: horizontal is 0, vertical is infinity, diagonals and other lines are reduced fractions.",
   "The goal is to use every unique slope available in the chosen grid at least once.",
-  "The slope panel updates live; select a slope there to highlight the matching segments in your pattern.",
 ];
+
+const examplePath = [1, 8, 3, 4, 9, 7, 5, 2, 6];
+const examplePositions: Record<number, { x: number; y: number }> = {
+  1: { x: 24, y: 24 },
+  2: { x: 90, y: 24 },
+  3: { x: 156, y: 24 },
+  4: { x: 24, y: 90 },
+  5: { x: 90, y: 90 },
+  6: { x: 156, y: 90 },
+  7: { x: 24, y: 156 },
+  8: { x: 90, y: 156 },
+  9: { x: 156, y: 156 },
+};
 
 export default function SelectPage() {
   const router = useRouter();
 
   return (
-    <main className="min-h-screen bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
+    <main className="min-h-screen text-[#2F3437]">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8 lg:py-20">
         <section className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-start">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -68,13 +78,13 @@ export default function SelectPage() {
             className="space-y-5"
           >
             <div className="space-y-3">
-              <p className="text-sm font-medium uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">
+              <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#787774]">
                 slope coverage puzzle
               </p>
-              <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-zinc-950 dark:text-white sm:text-5xl lg:text-6xl">
+              <h1 className="editorial-serif max-w-4xl text-5xl text-[#2F3437] sm:text-6xl lg:text-7xl">
                 The Most Complicated Lock Pattern Game
               </h1>
-              <p className="max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-lg">
+              <p className="max-w-2xl text-base leading-7 text-[#787774] sm:text-lg">
                 Draw an Android-style lock pattern that covers every possible line slope on the grid.
                 The larger the grid, the more slopes you must discover without reusing points.
               </p>
@@ -88,31 +98,31 @@ export default function SelectPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.08 }}
                   onClick={() => router.push(`/game?size=${option.size}`)}
-                  className="group min-h-52 rounded-lg border border-zinc-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+                  className="minimal-card group min-h-52 p-5 text-left transition hover:-translate-y-0.5"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="text-3xl font-semibold" style={{ color: option.accent }}>
                         {option.name}
                       </div>
-                      <div className="mt-1 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                      <div className="mt-1 text-sm font-medium text-[#787774]">
                         {option.difficulty}
                       </div>
                     </div>
-                    <span className="rounded-md border border-zinc-200 px-2 py-1 text-xs font-medium text-zinc-600 dark:border-zinc-700 dark:text-zinc-300">
+                    <span className="rounded-md border border-[#EAEAEA] px-2 py-1 text-xs font-medium text-[#787774]">
                       Play
                     </span>
                   </div>
-                  <p className="mt-5 min-h-12 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+                  <p className="mt-5 min-h-12 text-sm leading-6 text-[#787774]">
                     {option.description}
                   </p>
                   <div className="mt-5 grid grid-cols-2 gap-2 text-sm">
-                    <div className="rounded-md bg-zinc-100 p-3 dark:bg-zinc-800">
-                      <div className="text-xs text-zinc-500 dark:text-zinc-400">Points</div>
+                    <div className="soft-panel p-3">
+                      <div className="text-xs text-[#787774]">Points</div>
                       <div className="mt-1 font-semibold">{option.totalPoints}</div>
                     </div>
-                    <div className="rounded-md bg-zinc-100 p-3 dark:bg-zinc-800">
-                      <div className="text-xs text-zinc-500 dark:text-zinc-400">Slopes</div>
+                    <div className="soft-panel p-3">
+                      <div className="text-xs text-[#787774]">Slopes</div>
                       <div className="mt-1 font-semibold">{option.totalSlopes}</div>
                     </div>
                   </div>
@@ -125,41 +135,90 @@ export default function SelectPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.1 }}
-            className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+            className="minimal-card p-6"
           >
             <h2 className="text-lg font-semibold">Rules</h2>
-            <ol className="mt-4 space-y-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+            <ol className="mt-4 space-y-3 text-sm leading-6 text-[#787774]">
               {rules.map((rule, index) => (
                 <li key={rule} className="flex gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-xs font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
+                  <span className="mono mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[#EAEAEA] bg-[#F7F6F3] text-xs font-semibold text-[#2F3437]">
                     {index + 1}
                   </span>
                   <span>{rule}</span>
                 </li>
               ))}
             </ol>
+
+            <div className="mt-6 border-t border-[#EAEAEA] pt-5">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-[#2F3437]">
+                  3x3 example
+                </h3>
+                <span className="mono text-xs text-[#787774]">1 8 3 4 9 7 5 2 6</span>
+              </div>
+              <div className="mt-4 rounded-lg border border-[#EAEAEA] bg-[#FBFBFA] p-4">
+                <svg viewBox="0 0 180 180" className="h-auto w-full" role="img" aria-label="3 by 3 example pattern 1 8 3 4 9 7 5 2 6">
+                  {[24, 90, 156].map((offset) => (
+                    <React.Fragment key={offset}>
+                      <line x1="24" y1={offset} x2="156" y2={offset} stroke="#EAEAEA" strokeWidth="1" />
+                      <line x1={offset} y1="24" x2={offset} y2="156" stroke="#EAEAEA" strokeWidth="1" />
+                    </React.Fragment>
+                  ))}
+                  {examplePath.slice(0, -1).map((point, index) => {
+                    const from = examplePositions[point];
+                    const to = examplePositions[examplePath[index + 1]];
+                    return (
+                      <line
+                        key={`${point}-${examplePath[index + 1]}`}
+                        x1={from.x}
+                        y1={from.y}
+                        x2={to.x}
+                        y2={to.y}
+                        stroke="#5F7F5B"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        opacity="0.9"
+                      />
+                    );
+                  })}
+                  {Object.entries(examplePositions).map(([point, position]) => (
+                    <g key={point}>
+                      <circle cx={position.x} cy={position.y} r="12" fill="#FFFFFF" stroke="#2F3437" strokeWidth="2" />
+                      <text
+                        x={position.x}
+                        y={position.y + 4}
+                        textAnchor="middle"
+                        className="fill-[#2F3437] text-[11px] font-semibold"
+                      >
+                        {point}
+                      </text>
+                    </g>
+                  ))}
+                </svg>
+              </div>
+            </div>
           </motion.aside>
         </section>
 
-        <section className="grid gap-4 rounded-lg border border-zinc-200 bg-white p-5 text-sm leading-6 text-zinc-600 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 md:grid-cols-[1fr_auto] md:items-center">
+        <section className="minimal-card grid gap-4 p-6 text-sm leading-6 text-[#787774] md:grid-cols-[1fr_auto] md:items-center">
           <div>
-            <h2 className="font-semibold text-zinc-950 dark:text-white">Concept</h2>
+            <h2 className="font-semibold text-[#2F3437]">Concept</h2>
             <p className="mt-1">
-              Inspired by the lock-pattern idea discussed in{" "}
+              A visualization game by the lock-pattern idea discussed in{" "}
               <a
                 href="https://www.youtube.com/watch?v=PKjbBQ0PBCQ"
                 target="_blank"
                 rel="noreferrer"
-                className="font-medium text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
+                className="font-medium text-[#1F6C9F] underline-offset-4 hover:underline"
               >
                 this concept video
               </a>
-              . This website was generated by codex + gpt-5.5.
+              . This website was generated by Codex + GPT-5.5.
             </p>
           </div>
           <button
             onClick={() => router.push("/game?size=3")}
-            className="rounded-md bg-zinc-950 px-4 py-2 font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+            className="rounded-md bg-[#111111] px-4 py-2 font-medium text-white transition hover:bg-[#333333] active:scale-[0.98]"
           >
             Start with 3x3
           </button>

@@ -1,13 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
-  --foreground: #1d1d1f;
-  --accent: #0071e3;
-  --success: #34c759;
-  --error: #ff3b30;
-  --card-bg: #ffffff;
-  --border: #d2d2d7;
+  --background: #f7f6f3;
+  --foreground: #2f3437;
+  --muted: #787774;
+  --border: #eaeaea;
+  --surface: #ffffff;
+  --surface-soft: #f9f9f8;
 }
 
 @theme inline {
@@ -15,99 +14,79 @@
   --color-foreground: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --foreground: #f5f5f7;
-    --card-bg: #1d1d1f;
-    --border: #424245;
-  }
-}
-
 * {
   box-sizing: border-box;
 }
 
-body {
+html {
   background: var(--background);
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(120, 119, 116, 0.055), transparent 28rem),
+    linear-gradient(90deg, rgba(47, 52, 55, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(47, 52, 55, 0.03) 1px, transparent 1px),
+    var(--background);
+  background-size: auto, 44px 44px, 44px 44px, auto;
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  font-family: "SF Pro Display", "Geist Sans", "Helvetica Neue", "Switzer", Arial, sans-serif;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Shared button styling retained for simple standalone pages. */
-.apple-button {
-  background: linear-gradient(180deg, #0077ed 0%, #0071e3 100%);
-  color: white;
-  border: none;
-  border-radius: 980px;
-  padding: 12px 24px;
-  font-size: 17px;
-  font-weight: 400;
+button,
+input {
+  font: inherit;
+}
+
+button {
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.apple-button:hover {
-  background: linear-gradient(180deg, #0077ed 0%, #005bb5 100%);
-  transform: scale(1.02);
-}
-
-.apple-button:active {
-  transform: scale(0.98);
-}
-
-.apple-button:disabled {
-  background: #86868b;
+button:disabled {
   cursor: not-allowed;
-  transform: none;
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.editorial-serif {
+  font-family: "Lyon Text", "Newsreader", "Playfair Display", "Instrument Serif", Georgia, serif;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.mono {
+  font-family: "Geist Mono", "SF Mono", "JetBrains Mono", Consolas, monospace;
+}
+
+.minimal-card {
+  border: 1px solid var(--border);
   border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
 }
 
-@media (prefers-color-scheme: dark) {
-  .glass-card {
-    background: rgba(29, 29, 31, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
+.soft-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
 }
 
-/* 渐变背景动画 */
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.tag {
+  border-radius: 9999px;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.animated-gradient {
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  background-size: 400% 400%;
-  animation: gradient-shift 15s ease infinite;
-}
-
-/* 成功动画 */
-@keyframes success-pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 20px rgba(52, 199, 89, 0);
-  }
-}
-
-.success-animation {
-  animation: success-pulse 2s ease-in-out infinite;
+kbd {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #f7f6f3;
+  padding: 0.1rem 0.35rem;
+  font-family: "Geist Mono", "SF Mono", "JetBrains Mono", Consolas, monospace;
+  font-size: 0.72em;
 }

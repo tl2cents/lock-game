@@ -14,16 +14,16 @@ function GameContent() {
   const validSize = [3, 5, 7].includes(gridSize) ? gridSize : 3;
 
   return (
-    <main className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <div className="mx-auto flex w-full max-w-6xl px-3 pt-4 sm:px-4 lg:px-6">
+    <main className="min-h-screen">
+      <div className="mx-auto flex w-full max-w-7xl px-4 pt-5 sm:px-6 lg:px-8">
         <Link 
           href="/select"
-          className="inline-flex items-center rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm font-medium text-zinc-700 shadow-sm transition hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700"
+          className="inline-flex items-center rounded-md border border-[#EAEAEA] bg-white px-3 py-2 text-sm font-medium text-[#2F3437] transition hover:bg-[#F7F6F3] active:scale-[0.98]"
         >
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back
+          Grid selection
         </Link>
       </div>
       <LockGrid gridSize={validSize} />
@@ -34,8 +34,8 @@ function GameContent() {
 export default function GamePage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center">
-        <div className="text-xl text-zinc-600 dark:text-zinc-400">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-xl text-[#787774]">Loading...</div>
       </div>
     }>
       <GameContent />
